@@ -5,5 +5,8 @@ package pong.enums;
  */
 public enum InputType {
     PLAYER_UP,
-    PLAYER_DOWN
+    PLAYER_DOWN,
+    GAME_PAUSE,
+    GAME_EXIT,
+    GAME_END
 }

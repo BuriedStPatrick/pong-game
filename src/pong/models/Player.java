@@ -1,14 +1,15 @@
 package pong.models;
 
-import pong.abstracts.ControllableObject;
+import pong.abstracts.InputController;
 import pong.enums.InputType;
 import pong.enums.RacquetState;
 import pong.handlers.InputMapper;
+import pong.models.gameobjects.Racquet;
 
 /**
  * Created by patrick.christensen on 4/10/2017.
  */
-public class Player extends ControllableObject {
+public class Player extends InputController {
 
     private Racquet racquet;
     private int score;
@@ -24,6 +25,10 @@ public class Player extends ControllableObject {
 
     public int getScore() {
         return score;
+    }
+
+    public void addScore(){
+        score++;
     }
 
     @Override

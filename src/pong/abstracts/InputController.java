@@ -6,10 +6,9 @@ import pong.handlers.InputMapper;
 /**
  * Created by patrick.christensen on 4/10/2017.
  */
-public abstract class ControllableObject implements InputHandler{
+public abstract class InputController implements InputHandler{
     protected InputMapper inputMapper;
-
-    protected ControllableObject(InputMapper inputMapper){
+    protected InputController(InputMapper inputMapper){
         this.inputMapper = inputMapper;
     }
 }

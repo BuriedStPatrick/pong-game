@@ -5,6 +5,9 @@ package pong.enums;
  */
 public enum GameState {
     PLAYING,
+    RESUMING,
+    PAUSING,
     PAUSED,
-    GAME_OVER
+    GAME_OVER,
+    GAME_EXITING
 }

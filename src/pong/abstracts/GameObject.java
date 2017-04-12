@@ -1,43 +1,34 @@
 package pong.abstracts;
 
+import pong.geometry.Bounds;
+import pong.geometry.Vector;
+
 /**
  * Created by patrick.christensen on 4/10/2017.
  */
 public abstract class GameObject {
 
-    protected float posX;
-    protected float posY;
-    protected float width;
-    protected float height;
+    protected Bounds bounds;
+    protected Vector position;
 
-    protected GameObject(float posX, float posY, float width, float height){
-        this.posX = posX;
-        this.posY = posY;
-        this.height = height;
-        this.width = width;
+    protected GameObject(Vector position, Bounds bounds){
+        this.position = position;
+        this.bounds = bounds;
     }
 
-    public float getWidth(){
-        return width;
+    public Vector getPosition() {
+        return position;
     }
 
-    public float getHeight(){
-        return height;
+    public void setPosition(Vector position) {
+        this.position = position;
     }
 
-    public void setPosX(float posX) {
-        this.posX = posX;
+    public void setBounds(Bounds bounds) {
+        this.bounds = bounds;
     }
 
-    public void setPosY(float posY) {
-        this.posY = posY;
-    }
-
-    public float getPosX() {
-        return posX;
-    }
-
-    public float getPosY() {
-        return posY;
+    public Bounds getBounds() {
+        return bounds;
     }
 }
