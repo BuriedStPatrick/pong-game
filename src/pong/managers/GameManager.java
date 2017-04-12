@@ -79,4 +79,8 @@ public class GameManager extends InputController implements Updateable {
     public GameState getGameState(){
         return gameState;
     }
+
+    public void setGameState(GameState gameState){
+        this.gameState = gameState;
+    }
 }

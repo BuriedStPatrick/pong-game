@@ -21,7 +21,7 @@ import java.util.Random;
  */
 public class Pong extends PApplet implements Game{
 
-    private static final int PADDING = 20;
+    private static final int WINDOW_PADDING = 20;
     private static final boolean DEBUG = false;
     private Player player1, player2;
     private Goal goal1, goal2;
@@ -38,6 +38,7 @@ public class Pong extends PApplet implements Game{
     @Override
     public void setup() {
         super.setup();
+        frameRate(60f);
         gameManager = new GameManager(this,
                 new InputMapper()
                     .map(ESC, InputType.GAME_EXIT)
@@ -60,17 +61,20 @@ public class Pong extends PApplet implements Game{
     public void draw() {
         if(gameManager.getGameState() != GameState.PAUSED){
             update();
-            background(255, 204, 0);
-            Racquet racquet1 = player1.getRacquet();
-            Racquet racquet2 = player2.getRacquet();
-            drawRacquet(racquet1);
-            drawRacquet(racquet2);
-            drawBall(ball);
-            drawScore();
-            if(DEBUG){
-                drawDebug();
-            }
-        }else if(gameManager.getGameState() == GameState.GAME_OVER){
+            render();
+        }
+    }
+
+    private void render(){
+        background(0,150,136);
+        drawRacquet(player1.getRacquet());
+        drawRacquet(player2.getRacquet());
+        drawBall(ball);
+        drawScore();
+        if(DEBUG){
+            drawDebug();
+        }
+        if(gameManager.getGameState() == GameState.GAME_OVER){
             drawGameOver();
         }
     }
@@ -99,14 +103,17 @@ public class Pong extends PApplet implements Game{
         fill(255, 255, 255);
         text("Score", scorePos.getX() + scorePadding, scorePos.getY() + 32 + scorePadding);
 
+        textSize(16f);
+
         text("Player 1: " + player1.getScore(), scorePos.getX() + scorePadding, scorePos.getY() + 64 + scorePadding);
+        text("Player 2: " + player2.getScore(), scorePos.getX() + scorePadding, scorePos.getY() + 64 + 32 + scorePadding);
 
         fill(0, 0, 0, 75f);
         rect(scorePos.getX(), scorePos.getY(), scoreBounds.getWidth(), scoreBounds.getHeight());
     }
 
     private void drawBall(Ball ball){
-        fill(150);
+        fill(233,30,99);
         ellipseMode(CENTER);
         noStroke();
         smooth();
@@ -119,7 +126,7 @@ public class Pong extends PApplet implements Game{
     }
 
     private void drawRacquet(Racquet racquet){
-        fill(150, 50, 240);
+        fill(255,235,59);
         noStroke();
         rect(
             racquet.getPosition().getX(),
@@ -174,8 +181,8 @@ public class Pong extends PApplet implements Game{
 
     private void setupPlayers() {
         players = new ArrayList<>();
-        Racquet racquet1 = new Racquet(new Vector(PADDING, height/2));
-        Racquet racquet2 = new Racquet(new Vector(width - (PADDING + Racquet.WIDTH), height/2));
+        Racquet racquet1 = new Racquet(new Vector(WINDOW_PADDING, height/2));
+        Racquet racquet2 = new Racquet(new Vector(width - (WINDOW_PADDING + Racquet.WIDTH), height/2));
         collidables.add(racquet1);
         collidables.add(racquet2);
 
@@ -195,8 +202,8 @@ public class Pong extends PApplet implements Game{
     }
 
     private void setupGoals(){
-        goal1 = new Goal(new Vector(0, 0), new Bounds(PADDING, height), player1);
-        goal2 = new Goal(new Vector(width-PADDING, 0), new Bounds(PADDING, height), player2);
+        goal1 = new Goal(new Vector(0, 0), new Bounds(WINDOW_PADDING, height), player1);
+        goal2 = new Goal(new Vector(width- WINDOW_PADDING, 0), new Bounds(WINDOW_PADDING, height), player2);
         collidables.add(goal1);
         collidables.add(goal2);
     }
@@ -221,8 +228,7 @@ public class Pong extends PApplet implements Game{
 
     @Override
     public void gameOver() {
-        System.out.println("Game over!");
-        drawGameOver();
+        gameManager.setGameState(GameState.GAME_OVER);
     }
 
     @Override
@@ -231,7 +237,9 @@ public class Pong extends PApplet implements Game{
         for(Player player : players){
             if(player != keeper){
                 player.addScore();
-                System.out.println("adding score, total: " + player.getScore());
+                if(player.getScore() >= 10){
+                    gameOver();
+                }
                 resetBall();
             }
         }
@@ -253,10 +261,14 @@ public class Pong extends PApplet implements Game{
 
     private void drawGameOver(){
         textSize(32);
-        fill(0, 102, 153, 51);
+        fill(0, 0, 0);
         text("Game is over", width/2, height/2);
         textSize(16);
         fill(0, 102, 153);
-        text("Score: " + player1.getScore() + " to " + player2.getScore(), width/2, (height/2) + 100);
+        if(player1.getScore() > player2.getScore()){
+            text("Player 1 won!", width/2, (height/2) + 32);
+        }else{
+            text("Player 2 won!", width/2, (height/2) + 32);
+        }
     }
 }

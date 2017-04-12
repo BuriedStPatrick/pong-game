@@ -12,7 +12,7 @@ import pong.interfaces.Game;
  */
 public class Ball extends CollidableObject {
 
-    public static final float MAX_VELOCITY = 10;
+    public static final float MAX_VELOCITY = 12;
     private float radius;
     private Game game;
 
