@@ -4,6 +4,7 @@ import pong.enums.InputType;
 import pong.geometry.Bounds;
 import pong.geometry.Vector;
 import pong.handlers.InputMapper;
+import pong.helpers.MathHelper;
 import pong.interfaces.Game;
 import pong.managers.GameManager;
 import pong.models.Player;
@@ -65,6 +66,7 @@ public class Pong extends PApplet implements Game{
             drawRacquet(racquet1);
             drawRacquet(racquet2);
             drawBall(ball);
+            drawScore();
             if(DEBUG){
                 drawDebug();
             }
@@ -86,6 +88,21 @@ public class Pong extends PApplet implements Game{
                 goal2.getBounds().getWidth(),
                 goal2.getBounds().getHeight()
         );
+    }
+
+    private void drawScore(){
+        int scorePadding = 10;
+        Bounds scoreBounds = new Bounds(windowBounds.getWidth()/3, windowBounds.getHeight()/3);
+        Vector scorePos = new Vector(width/2-(scoreBounds.getWidth()/2), height-(scoreBounds.getHeight()/2));
+        textSize(32f);
+
+        fill(255, 255, 255);
+        text("Score", scorePos.getX() + scorePadding, scorePos.getY() + 32 + scorePadding);
+
+        text("Player 1: " + player1.getScore(), scorePos.getX() + scorePadding, scorePos.getY() + 64 + scorePadding);
+
+        fill(0, 0, 0, 75f);
+        rect(scorePos.getX(), scorePos.getY(), scoreBounds.getWidth(), scoreBounds.getHeight());
     }
 
     private void drawBall(Ball ball){
@@ -221,10 +238,17 @@ public class Pong extends PApplet implements Game{
     }
 
     private void resetBall(){
-        int randomDegrees = new Random().nextInt(360);
-
+        int randomDegrees =
+                MathHelper.limitValue(
+                    new Random().nextInt(330),
+                    30,
+                    330
+                );
         ball.setPosition(new Vector(width/2, height/2));
-        ball.getVelocity().rotate(randomDegrees);
+        Vector resetVelocity = new Vector(1, 1);
+        resetVelocity.setLength(ball.MAX_VELOCITY);
+        resetVelocity.rotate(randomDegrees);
+        ball.setVelocity(resetVelocity);
     }
 
     private void drawGameOver(){

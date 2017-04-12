@@ -65,6 +65,8 @@ public class Vector {
 
     public void setLength(float length){
         float difference = getLength()/length;
+        if(this.x == 0) this.x = 1;
+        if(this.y == 0) this.y = 1;
         this.x /= difference;
         this.y /= difference;
     }
